@@ -1,0 +1,31 @@
+# === Python 기본 ===
+__pycache__/
+*.py[cod]
+*.pyo
+
+# === 가상환경 ===
+.venv/
+env/
+venv/
+
+# === 환경 변수 파일 ===
+.env
+.env.*
+
+# === 테스트/캐시 ===
+.pytest_cache/
+.cache/
+.coverage
+
+# === IDE ===
+.vscode/
+.idea/
+
+# === 로그/임시 파일 ===
+*.log
+*.tmp
+*.swp
+
+# === 시스템 파일 ===
+.DS_Store
+Thumbs.db

@@ -1,4 +1,0 @@
-[
-  "tests/test_qdrant.py::test_qdrant_search_and_filter",
-  "tests/test_qdrant.py::test_qdrant_upsert"
-]
