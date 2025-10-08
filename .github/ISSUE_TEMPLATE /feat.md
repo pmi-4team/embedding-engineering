@@ -1,7 +1,7 @@
 ---
 name: "✨Feat"
 about: feature issue template
-title: "[✨ Feat] #주차-제목"
+title: "[✨ Feat] 구현 기능"
 labels: "✨ Feature"
 assignees: ''
 
