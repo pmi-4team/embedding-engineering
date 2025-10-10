@@ -72,6 +72,6 @@ def test_qdrant_search():
     # search_points 함수에 테스트용 컬렉션 이름을 명시적으로 전달
     results = qdrant.search_points(query_vector=query_vector, top_k=3, collection_name=TEST_COLLECTION_NAME)
 
-    assert results[0].id == 1  # "오늘 날씨가 맑다."가 가장 의미가 맞음
+    assert results[0].id == 1  # "오늘 날씨가 좋다."가 가장 의미가 맞음
     print(f"검색 테스트 통과, 가장 유사한 ID: {results[0].id}")
 
