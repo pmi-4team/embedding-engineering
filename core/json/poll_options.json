@@ -1,0 +1,197 @@
+[
+  {
+    "option_id": 1,
+    "poll_id": 1,
+    "option_text": "맛있는 음식 먹기"
+  },
+  {
+    "option_id": 2,
+    "poll_id": 1,
+    "option_text": "여행 가기"
+  },
+  {
+    "option_id": 3,
+    "poll_id": 1,
+    "option_text": "옷/패션관련 제품 구매하기"
+  },
+  {
+    "option_id": 4,
+    "poll_id": 1,
+    "option_text": "취미관련 제품 구매하기"
+  },
+  {
+    "option_id": 5,
+    "poll_id": 1,
+    "option_text": "기타"
+  },
+  {
+    "option_id": 6,
+    "poll_id": 2,
+    "option_text": "업무 / 학업"
+  },
+  {
+    "option_id": 7,
+    "poll_id": 2,
+    "option_text": "출퇴근"
+  },
+  {
+    "option_id": 8,
+    "poll_id": 2,
+    "option_text": "인간관계 (가족, 친구, 직장 등)"
+  },
+  {
+    "option_id": 9,
+    "poll_id": 2,
+    "option_text": "경제적 문제"
+  },
+  {
+    "option_id": 10,
+    "poll_id": 2,
+    "option_text": "건강 문제"
+  },
+  {
+    "option_id": 11,
+    "poll_id": 2,
+    "option_text": "기타"
+  },
+  {
+    "option_id": 12,
+    "poll_id": 3,
+    "option_text": "수면"
+  },
+  {
+    "option_id": 13,
+    "poll_id": 3,
+    "option_text": "음식 섭취"
+  },
+  {
+    "option_id": 14,
+    "poll_id": 3,
+    "option_text": "운동"
+  },
+  {
+    "option_id": 15,
+    "poll_id": 3,
+    "option_text": "명상 / 휴식"
+  },
+  {
+    "option_id": 16,
+    "poll_id": 3,
+    "option_text": "마사지 / 스파"
+  },
+  {
+    "option_id": 17,
+    "poll_id": 3,
+    "option_text": "기타"
+  },
+  {
+    "option_id": 18,
+    "poll_id": 4,
+    "option_text": "매우 만족한다"
+  },
+  {
+    "option_id": 19,
+    "poll_id": 4,
+    "option_text": "만족한다"
+  },
+  {
+    "option_id": 20,
+    "poll_id": 4,
+    "option_text": "보통이다"
+  },
+  {
+    "option_id": 21,
+    "poll_id": 4,
+    "option_text": "불만족한다"
+  },
+  {
+    "option_id": 22,
+    "poll_id": 4,
+    "option_text": "매우 불만족한다"
+  },
+  {
+    "option_id": 23,
+    "poll_id": 5,
+    "option_text": "3만원 미만"
+  },
+  {
+    "option_id": 24,
+    "poll_id": 5,
+    "option_text": "3만원 이상 ~ 5만원 미만"
+  },
+  {
+    "option_id": 25,
+    "poll_id": 5,
+    "option_text": "5만원 이상 ~ 10만원 미만"
+  },
+  {
+    "option_id": 26,
+    "poll_id": 5,
+    "option_text": "10만원 이상 ~ 15만원 미만"
+  },
+  {
+    "option_id": 27,
+    "poll_id": 5,
+    "option_text": "15만원 이상"
+  },
+  {
+    "option_id": 28,
+    "poll_id": 6,
+    "option_text": "브랜드 명성"
+  },
+  {
+    "option_id": 29,
+    "poll_id": 6,
+    "option_text": "제품 리뷰 및 사용 후기"
+  },
+  {
+    "option_id": 30,
+    "poll_id": 6,
+    "option_text": "성분 및 효과"
+  },
+  {
+    "option_id": 31,
+    "poll_id": 6,
+    "option_text": "가격"
+  },
+  {
+    "option_id": 32,
+    "poll_id": 6,
+    "option_text": "패키지 디자인"
+  },
+  {
+    "option_id": 33,
+    "poll_id": 6,
+    "option_text": "친환경/비건 제품 여부"
+  },
+  {
+    "option_id": 34,
+    "poll_id": 6,
+    "option_text": "기타"
+  },
+  {
+    "option_id": 35,
+    "poll_id": 7,
+    "option_text": "외식비"
+  },
+  {
+    "option_id": 36,
+    "poll_id": 7,
+    "option_text": "배달비"
+  },
+  {
+    "option_id": 37,
+    "poll_id": 7,
+    "option_text": "옷/쇼핑"
+  },
+  {
+    "option_id": 38,
+    "poll_id": 7,
+    "option_text": "콘서트, 전시 등 문화생활"
+  },
+  {
+    "option_id": 39,
+    "poll_id": 7,
+    "option_text": "기타"
+  }
+]

@@ -96,6 +96,7 @@
 
 from __future__ import annotations
 from typing import List, Dict, Tuple
+import json
 import psycopg2
 from psycopg2.extras import RealDictCursor
 
@@ -103,6 +104,8 @@ from qdrant_client import models
 from workers.embedder import embed_batch
 from core.config import settings
 from infra.qdrant import initialize_qdrant, upsert_points
+
+from workers.llm_extractor import extract_normalized
 
 
 # ----- PostgreSQL 접속 정보 -----
@@ -114,32 +117,42 @@ DB_CONFIG = {
     "port":     "5432",
 }
 
-# 원본 소스 뷰/테이블 (정규화된 DB 텍스트가 여기서 나온다고 가정)
+
+# DB 정규화 텍스트(norm_text)가 있으면 사용, 없으면 원문(title/body)로 폴백
+# 원본 소스 뷰/테이블 (정규화된 DB 텍스트가 여기서 나온다고 가정) if 뷰/테이블이 없다면 LEFT JOIN 부분을 제거해도 동작(아래 COALESCE가 폴백)
 SQL_FETCH = """
-    SELECT id, title, body, category, updated_at
-    FROM public.search_corpus
-    WHERE id > %s
-    ORDER BY id
+    SELECT sc.id,
+        sc.title,
+        sc.body,
+        sc.category,
+        sc.updated_at,
+        COALESCE(scn.norm_text, NULL) AS norm_text
+    FROM public.search_corpus sc
+    LEFT JOIN public.search_corpus_normalized scn
+        ON scn.id = sc.id            -- 있으면 DB 정규화 텍스트 사용
+    WHERE sc.id > %s
+    ORDER BY sc.id
     LIMIT %s
 """
 
 
 # LLM 처리 여부 확인/조회/저장
 SQL_HAS_LLM = "SELECT 1 FROM public.llm_outputs WHERE source_id = %s"
-SQL_GET_LLM  = "SELECT normalized, llm_version FROM public.llm_outputs WHERE source_id = %s"
-SQL_PUT_LLM  = "INSERT INTO public.llm_outputs (source_id, normalized, llm_version) VALUES (%s, %s, %s) ON CONFLICT (source_id) DO NOTHING"
+SQL_PUT_LLM = "INSERT INTO public.llm_outputs (source_id, normalized, llm_version, raw_json) VALUES (%s, %s, %s, %s::jsonb) ON CONFLICT (source_id) DO NOTHING"
+SQL_PUT_LLM_ERR = "INSERT INTO public.llm_outputs (source_id, error_msg) VALUES (%s, %s) ON CONFLICT (source_id) DO NOTHING"
 
 # 배치 크기
 BATCH = 256
 
-# ---- (임시) LLM 호출 스텁 ----
-# 실제로는 workers/llm_extractor.py의 함수를 불러 LLM 호출/스키마 검증을 수행하면 됨.
-# 여기서는 파이프라인을 맞추기 위해 title+body를 그대로 normalized로 반환.
-def call_llm_normalize(title: str, body: str) -> Tuple[str, str]:
-    # TODO: 실제 LLM 연동으로 교체
-    normalized = f"{title}\n{body}"
-    llm_version = "stub-0"  # 프롬프트/모델 버전 명시
-    return normalized, llm_version
+
+def call_llm_normalize(title: str, body: str) -> Tuple[str, str, dict]:
+    """
+    실제 LLM 연동:
+    workers.llm_extractor.extract_normalized() -> {normalized_text, llm_version}
+    """
+    data = extract_normalized(title, body)  # TypedDict
+    # data 예: {"normalized_text": "...", "llm_version": "claude-xxx-normalize-v0.1"}
+    return data["normalized_text"], data["llm_version"], data
 
 def choose_text_for_embedding(cur, row: Dict) -> Tuple[str, str, str | None]:
     """
@@ -154,13 +167,23 @@ def choose_text_for_embedding(cur, row: Dict) -> Tuple[str, str, str | None]:
 
     if seen:
         # 재질의: DB 직행
-        text = f"{row['title']}\n{row['body']}"
-        return text, "db", None
-    else:
-        # 최초 질의: LLM 경로
-        normalized, llm_ver = call_llm_normalize(row["title"], row["body"])
-        cur.execute(SQL_PUT_LLM, (row["id"], normalized, llm_ver))
+        db_text = row.get("norm_text")
+        if db_text and isinstance(db_text, str) and db_text.strip():
+            return db_text, "db", None
+        
+        # DB 정규화가 아직 없다면 임시로 원문 사용(운영 정책에 따라 스킵도 가능)
+        raw_text = f"{row['title']}\n{row['body']}"
+        return raw_text, "fallback_raw", None
+
+    try:
+        normalized, llm_ver, raw_json = call_llm_normalize(row["title"], row["body"])
+        cur.execute(SQL_PUT_LLM, (row["id"], normalized, llm_ver, json.dumps(raw_json)))
         return normalized, "llm", llm_ver
+    except Exception as e:
+        # 실패 시 기록만 남기고 폴백(정책상 스킵하려면 여기서 raise)
+        cur.execute(SQL_PUT_LLM_ERR, (row["id"], str(e)))
+        raw_text = f"{row['title']}\n{row['body']}"
+        return raw_text, "fallback_raw", None
     
 def run():
     # 0) Qdrant 컬렉션 보장
@@ -184,6 +207,7 @@ def run():
             # 규칙에 맞춰 임베딩 입력 텍스트/메타 결정
             texts: List[str] = []
             metas: List[Dict] = []
+
             for r in rows:
                 text, source_flag, llm_ver = choose_text_for_embedding(cur, r)
                 # llm_outputs INSERT 반영
@@ -195,8 +219,8 @@ def run():
                     "title": r["title"],
                     "category": r.get("category"),
                     "updated_at": str(r.get("updated_at")),
-                    "source": source_flag,
-                    "llm_version": llm_ver,
+                    "source": source_flag, # 'llm' | 'db' | 'fallback_raw'
+                    "llm_version": llm_ver,  # 최초 질의면 값 존재
                     "embedding_version": "kure-v1",
                 })
 

@@ -23,6 +23,11 @@ class Settings(BaseSettings):
         extra="ignore"
     )
 
+    # Anthropic / LLM
+    ANTHROPIC_API_KEY: str
+    LLM_MODEL: str = "claude-3-haiku-20240307"        # 권한 없는 모델 이슈 피하려 기본값은 haiku
+    LLM_TIMEOUT_SEC: int = 60
+
     # 앞으로 추가될 다른 설정들...
     # PG_URL: str
     # REDIS_URL: str
