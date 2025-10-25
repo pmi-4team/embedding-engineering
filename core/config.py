@@ -10,7 +10,20 @@ class Settings(BaseSettings):
     QDRANT_API_KEY: str
     QDRANT_COLLECTION: str = "feedback_current" # .env에 값이 없으면 이 기본값을 사용
 
-     # 앞으로 추가될 다른 설정들...
+    # PostgreSQL
+    POSTGRES_DSN: str
+
+    # Redis
+    REDIS_URL: str | None = None  # 선택적, 없으면 None 처리
+
+    # pydantic 설정
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        extra="ignore"
+    )
+
+    # 앞으로 추가될 다른 설정들...
     # PG_URL: str
     # REDIS_URL: str
     # ANTHROPIC_API_KEY: str
