@@ -1,0 +1,107 @@
+[
+  {
+    "question_id": "Q1",
+    "question_text": "결혼여부",
+    "question_type": "SINGLE"
+  },
+  {
+    "question_id": "Q2",
+    "question_text": "자녀수",
+    "question_type": "NUMERIC"
+  },
+  {
+    "question_id": "Q3",
+    "question_text": "가족수",
+    "question_type": "SINGLE"
+  },
+  {
+    "question_id": "Q4",
+    "question_text": "최종학력",
+    "question_type": "SINGLE"
+  },
+  {
+    "question_id": "Q5",
+    "question_text": "직업",
+    "question_type": "SINGLE"
+  },
+  {
+    "question_id": "Q5_1",
+    "question_text": "직무",
+    "question_type": "SINGLE"
+  },
+  {
+    "question_id": "Q6",
+    "question_text": "월평균 개인소득",
+    "question_type": "SINGLE"
+  },
+  {
+    "question_id": "Q7",
+    "question_text": "월평균 가구소득",
+    "question_type": "SINGLE"
+  },
+  {
+    "question_id": "Q8",
+    "question_text": "보유전제품",
+    "question_type": "MULTI"
+  },
+  {
+    "question_id": "Q9_1",
+    "question_text": "보유 휴대폰 단말기 브랜드",
+    "question_type": "SINGLE"
+  },
+  {
+    "question_id": "Q9_2",
+    "question_text": "보유 휴대폰 모델명",
+    "question_type": "SINGLE"
+  },
+  {
+    "question_id": "Q10",
+    "question_text": "보유차량여부",
+    "question_type": "SINGLE"
+  },
+  {
+    "question_id": "Q11_1",
+    "question_text": "자동차 제조사",
+    "question_type": "SINGLE"
+  },
+  {
+    "question_id": "Q11_2",
+    "question_text": "자동차 모델",
+    "question_type": "SINGLE"
+  },
+  {
+    "question_id": "Q12",
+    "question_text": "흡연경험",
+    "question_type": "MULTI"
+  },
+  {
+    "question_id": "Q12_1",
+    "question_text": "흡연경험 담배브랜드",
+    "question_type": "MULTI"
+  },
+  {
+    "question_id": "Q12_1_ETC",
+    "question_text": "흡연경험 담배브랜드(기타브랜드)",
+    "question_type": "STRING"
+  },
+  {
+    "question_id": "Q12_2",
+    "question_text": "궐련형 전자담배/가열식 전자담배 이용경험",
+    "question_type": "MULTI"
+  },
+  {
+    "question_id": "Q12_2_ETC",
+    "question_text": "흡연경험 담배 브랜드(기타내용)",
+    "question_type": "STRING"
+  },
+  {
+    "question_id": "Q13",
+    "question_text": "음용경험 술",
+    "question_type": "MULTI"
+  },
+  {
+    "question_id": "Q13_ETC",
+    "question_text": "음용경험 술(기타내용)",
+    "question_type": "STRING"
+  }
+]
