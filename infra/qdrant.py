@@ -8,7 +8,8 @@ from core.config import settings
 try:
     client = QdrantClient(
         url=settings.QDRANT_URL,
-        api_key=settings.QDRANT_API_KEY
+        api_key=settings.QDRANT_API_KEY,
+        timeout=120.0,
     )
     print("Qdrant Cloud에 성공적으로 연결됐습니다.")
 except Exception as e:
@@ -17,6 +18,24 @@ except Exception as e:
 # 상수 정의
 VECTOR_SIZE = 1024  # KURE-v1 모델의 벡터 차원(1024)
 DISTANCE_METRIC = models.Distance.COSINE # 벡터 유사도 계산 방식(코사인 유사도로 진행)
+
+def get_collection_info(collection_name: str = settings.QDRANT_COLLECTION):
+    """컬렉션 메타 정보를 조회."""
+    return client.get_collection(collection_name=collection_name)
+
+def delete_collection(collection_name: str = settings.QDRANT_COLLECTION):
+    """컬렉션 삭제(테스트용)."""
+    return client.delete_collection(collection_name=collection_name)
+
+def scroll_points(collection_name: str, flt: models.Filter | None = None, limit: int = 100, with_payload: bool = True):
+    """필터로 포인트 스크롤 조회(테스트 편의용)."""
+    points, next_offset = client.scroll(
+        collection_name=collection_name,
+        scroll_filter=flt,
+        limit=limit,
+        with_payload=with_payload,
+    )
+    return points, next_offset
 
 # 컬렉션 및 인덱스 생성 함수
 def initialize_qdrant(collection_name: str = settings.QDRANT_COLLECTION):
@@ -61,7 +80,7 @@ def upsert_points(points: list[models.PointStruct], collection_name: str = setti
     client.upsert(
         collection_name=collection_name,
         points=points,
-        wait=True # 작업이 완료될 때까지 기다리기
+        wait=True, # 작업이 완료될 때까지 기다리기
     )
 
 def search_points(query_vector: list[float], filters: models.Filter = None, top_k: int = 5, collection_name: str = settings.QDRANT_COLLECTION):
